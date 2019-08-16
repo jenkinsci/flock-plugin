@@ -64,7 +64,7 @@ public class FlockNotifier extends hudson.tasks.Recorder {
     @Override
     public boolean prebuild(AbstractBuild<?, ?> build, BuildListener listener) {
         if (isNotifyOnStart()) {
-            sendNotification(build, listener, true, null);
+            sendNotification(build, listener,  BuildResult.START);
         }
         return super.prebuild(build, listener);
     }
@@ -79,7 +79,7 @@ public class FlockNotifier extends hudson.tasks.Recorder {
                 || (isNotifyOnUnstable() && buildResult == BuildResult.UNSTABLE)
                 || (isNotifyOnBackToNormal() && buildResult == BuildResult.BACK_TO_NORMAL)
                 || (isNotifyOnRegression() && buildResult == BuildResult.REGRESSION)) {
-            sendNotification(build, listener, false, buildResult);
+            sendNotification(build, listener, buildResult);
         }
         return true;
     }
@@ -127,9 +127,10 @@ public class FlockNotifier extends hudson.tasks.Recorder {
         return null;
     }
 
-    private void sendNotification(AbstractBuild build, BuildListener listener, boolean buildStarted, BuildResult buildResult) {
+    private void sendNotification(AbstractBuild build, BuildListener listener, BuildResult buildResult) {
         FlockLogger logger = new FlockLogger(listener.getLogger());
-        JSONObject payload = PayloadManager.createPayload(build, buildStarted, buildResult);
+        BuildWrapper buildWrapper = new BuildWrapper(build, buildResult);
+        JSONObject payload = PayloadManager.createPayload(buildWrapper);
         logger.log(payload);
         try {
             RequestsManager.sendNotification(webhookUrl, payload, logger);

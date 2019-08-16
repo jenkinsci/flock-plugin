@@ -2,10 +2,12 @@ package com.flock.plugin;
 
 public enum BuildResult {
 
-    SUCCESS, FAILURE, ABORTED, NOT_BUILT, REGRESSION, UNSTABLE, BACK_TO_NORMAL;
+    START, SUCCESS, FAILURE, ABORTED, NOT_BUILT, REGRESSION, UNSTABLE, BACK_TO_NORMAL;
 
     public String stringValue() {
         switch (this) {
+            case START:
+                return "start";
             case SUCCESS:
                 return "success";
             case FAILURE:
