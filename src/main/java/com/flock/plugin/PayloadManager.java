@@ -1,5 +1,6 @@
 package com.flock.plugin;
 
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 public class PayloadManager {
@@ -19,8 +20,20 @@ public class PayloadManager {
 
         jsonObject.put("changes", buildWrapper.getChanges());
         jsonObject.put("causeAction", buildWrapper.getCauseAction());
+        if (null != getVersionNumber()) {
+            jsonObject.put("pluginVersion", getVersionNumber());
+        } else {
+            jsonObject.put("pluginVersion", Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString());
+        }
 
         return jsonObject;
+    }
+
+    private static String getVersionNumber() {
+        String fullVersion = Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString();
+        String[] splits = fullVersion.split("-SNAPSHOT");
+        String justNumber = splits[0];
+        return justNumber;
     }
 
 }
