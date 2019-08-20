@@ -98,3 +98,19 @@ It may be helpful to add the following to your ~/.m2/settings.xml (Windows users
 though this is unnecessary once you are already working in a plugin project (only useful for initial hpi:create).
 Note that adding the Jenkins repositories in a profile like this is not really necessary since most (all?) plugins already define these repositories.
 And the mirror declaration is probably unnecessary.*
+
+# Setting for Release
+**Signup Required**
+
+Jenkins plugins distributed via Jenkins project update sites need to be hosted in the jenkinsci GitHub organization, so you will need a user account on GitHub.
+To actually release your plugin, you will need a Jenkins community account that will give you access to the issue tracker, wiki, and Maven repository.
+Please refer https://jenkins.io/doc/developer/publishing/preparation/ for updated links.
+
+Get your Artifactory account name added here: https://github.com/jenkins-infra/repository-permissions-updater/blob/e41bc47f237c2228d44726422e38943242c2c21f/permissions/plugin-flock.yml by opening a PR.
+
+A full comprehensive guide is available here: https://github.com/jenkins-infra/repository-permissions-updater/blob/master/README.md
+
+# Release
+
+To release a plugin, follow the steps on the following referenced page
+https://jenkins.io/doc/developer/publishing/releasing/
