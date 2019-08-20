@@ -6,6 +6,7 @@ import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -130,7 +131,8 @@ public class FlockNotifier extends hudson.tasks.Recorder {
     private void sendNotification(AbstractBuild build, BuildListener listener, BuildResult buildResult) {
         FlockLogger logger = new FlockLogger(listener.getLogger());
         BuildWrapper buildWrapper = new BuildWrapper(build, buildResult);
-        JSONObject payload = PayloadManager.createPayload(buildWrapper);
+        JenkinsWrapper jenkinsWrapper = new JenkinsWrapper(Jenkins.get());
+        JSONObject payload = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
         logger.log(payload);
         try {
             RequestsManager.sendNotification(webhookUrl, payload, logger);

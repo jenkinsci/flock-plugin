@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 public class FlockNotifierTest {
 
     private BuildWrapper buildWrapper = Mockito.mock(BuildWrapper.class);
-
+    private JenkinsWrapper jenkinsWrapper = Mockito.mock(JenkinsWrapper.class);
 
     @Test
     public void testDisplayName() {
@@ -60,8 +60,9 @@ public class FlockNotifierTest {
 
     @Test
     public void testBuildStarted() {
+        PayloadManager payloadManager = Mockito.mock(PayloadManager.class);
         Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.START);
-        JSONObject payload = PayloadManager.createPayload(buildWrapper);
+        JSONObject payload = payloadManager.createPayload(buildWrapper, jenkinsWrapper);
         assert(payload.getString("status")).equals("start");
         assert(!payload.containsKey("duration"));
     }
@@ -69,9 +70,18 @@ public class FlockNotifierTest {
     @Test
     public void testJsonContainsDuration() {
         Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.SUCCESS);
-        JSONObject payload = PayloadManager.createPayload(buildWrapper);
-        assert(payload.getString("status")).equals(BuildResult.SUCCESS.stringValue());
-        assert(payload.containsKey("duration"));
+        Mockito.when(jenkinsWrapper.getPluginVersion()).thenReturn("1.0.0");
+        JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
+        assert(json.getString("status")).equals(BuildResult.SUCCESS.stringValue());
+        assert(json.containsKey("duration"));
+    }
+
+    @Test
+    public void testPluginVersion() {
+        Mockito.when(jenkinsWrapper.getPluginVersion()).thenReturn("1.0.0");
+        Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.SUCCESS);
+        JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
+        assert(json.getString("pluginVersion")).equals("1.0.0");
     }
 
 }
