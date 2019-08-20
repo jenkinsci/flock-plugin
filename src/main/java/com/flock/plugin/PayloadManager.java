@@ -18,7 +18,7 @@ public class PayloadManager {
         jsonObject.put("changes", buildWrapper.getChanges());
         jsonObject.put("causeAction", buildWrapper.getCauseAction());
         jsonObject.put("pluginVersion",  jenkinsWrapper.getPluginVersion());
-        
+
         return jsonObject;
     }
 

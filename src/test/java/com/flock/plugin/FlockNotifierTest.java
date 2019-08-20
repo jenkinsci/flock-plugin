@@ -84,4 +84,27 @@ public class FlockNotifierTest {
         assert(json.getString("pluginVersion")).equals("1.0.0");
     }
 
+    @Test
+    public void testPayloadProjectName() {
+        Mockito.when(buildWrapper.getProjectName()).thenReturn("Project 1");
+        Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.FAILURE);
+        JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
+        assert (json.containsValue("Project 1"));
+    }
+
+    @Test
+    public void testPayloadRunURL() {
+        Mockito.when(buildWrapper.getRunURL()).thenReturn("https://someurl.com");
+        Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.FAILURE);
+        JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
+        assert(json.getString("runURL")).equals("https://someurl.com");
+    }
+
+    @Test
+    public void testVersionNumberExtraction() {
+        Mockito.when(jenkinsWrapper.extractPluginVersionFrom("1.3.1-SNAPSHOT w32-2.1")).thenCallRealMethod();
+        String versionNumber = jenkinsWrapper.extractPluginVersionFrom("1.3.1-SNAPSHOT w32-2.1");
+        assert(versionNumber).equals("1.3.1");
+    }
+
 }

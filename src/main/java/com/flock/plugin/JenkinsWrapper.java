@@ -12,13 +12,16 @@ public class JenkinsWrapper {
 
     public String getPluginVersion() {
         String versionNumber = jenkins.pluginManager.getPlugin("flock").getVersionNumber().toString();
+        return extractPluginVersionFrom(versionNumber);
+    }
+
+    public String extractPluginVersionFrom(String versionNumber) {
         String[] splits = versionNumber.split("-SNAPSHOT");
         String justNumber = splits[0];
         if (justNumber == null) {
-            return jenkins.pluginManager.getPlugin("flock").getVersionNumber().toString();
+            return versionNumber;
         } else {
             return justNumber;
         }
-
     }
 }
