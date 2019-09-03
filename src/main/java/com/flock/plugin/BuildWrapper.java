@@ -58,14 +58,14 @@ public class BuildWrapper {
         this.causeAction = getCauses(build);
     }
 
-    private static long getDuration(AbstractBuild build) {
+    private long getDuration(AbstractBuild build) {
         long buildStartTime = build.getStartTimeInMillis();
         long currentTimeMillis = System.currentTimeMillis();
 
         return (currentTimeMillis - buildStartTime)/1000;
     }
 
-    private static JSONObject getChanges(AbstractBuild build) {
+    private JSONObject getChanges(AbstractBuild build) {
         HashSet<String> authors = new HashSet();
         HashSet<String> affectedPaths = new HashSet();
         for (Object item : build.getChangeSet().getItems()) {
@@ -80,7 +80,7 @@ public class BuildWrapper {
         return json;
     }
 
-    private static JSONObject getCauses(AbstractBuild b) {
+    private JSONObject getCauses(AbstractBuild b) {
         JSONObject jsonObject = new JSONObject();
         CauseAction causeAction = b.getAction(CauseAction.class);
         if (causeAction != null) {
