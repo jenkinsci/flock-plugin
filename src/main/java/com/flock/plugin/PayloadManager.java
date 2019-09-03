@@ -23,6 +23,7 @@ public class PayloadManager {
         } else {
             jsonObject.put("pluginVersion", Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString());
         }
+        jsonObject.put("jenkinsVersion", Jenkins.getVersion().toString());
 
         return jsonObject;
     }
