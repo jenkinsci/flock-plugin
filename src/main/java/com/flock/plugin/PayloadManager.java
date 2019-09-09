@@ -18,11 +18,7 @@ public class PayloadManager {
         jsonObject.put("runURL", buildWrapper.getRunURL());
         jsonObject.put("changes", buildWrapper.getChanges());
         jsonObject.put("causeAction", buildWrapper.getCauseAction());
-        if (null != getVersionNumber()) {
-            jsonObject.put("pluginVersion", getVersionNumber());
-        } else {
-            jsonObject.put("pluginVersion", Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString());
-        }
+        jsonObject.put("pluginVersion", getVersionNumber());
         jsonObject.put("jenkinsVersion", Jenkins.getVersion().toString());
 
         return jsonObject;
@@ -32,6 +28,9 @@ public class PayloadManager {
         String fullVersion = Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString();
         String[] splits = fullVersion.split("-SNAPSHOT");
         String justNumber = splits[0];
+        if (justNumber == null) {
+            return fullVersion;
+        }
         return justNumber;
     }
 
