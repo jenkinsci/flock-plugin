@@ -6,7 +6,6 @@ import hudson.model.CauseAction;
 import hudson.scm.ChangeLogSet;
 import hudson.triggers.SCMTrigger;
 import net.sf.json.JSONObject;
-
 import java.util.HashSet;
 
 public class BuildWrapper {
@@ -99,7 +98,5 @@ public class BuildWrapper {
         }
         return jsonObject;
     }
-
-
 
 }

@@ -13,7 +13,7 @@ public class JenkinsWrapper {
     public String getPluginVersion() {
         String versionNumber = jenkins.pluginManager.getPlugin("flock").getVersionNumber().toString();
         String[] splits = versionNumber.split("-SNAPSHOT");
-        return  splits[0];
+        return splits[0];
     }
 
     public String getJenkinsVersion() {
