@@ -1,11 +1,8 @@
 package com.flock.plugin;
 
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
 
 public class FlockNotifierTest {
 
@@ -87,6 +84,14 @@ public class FlockNotifierTest {
     }
 
     @Test
+    public void testJenkinsVersion() {
+        Mockito.when(jenkinsWrapper.getJenkinsVersion()).thenReturn("1.120.3");
+        Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.SUCCESS);
+        JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
+        assert(json.getString("jenkinsVersion")).equals("1.120.3");
+    }
+
+    @Test
     public void testPayloadProjectName() {
         Mockito.when(buildWrapper.getProjectName()).thenReturn("Project 1");
         Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.FAILURE);
@@ -100,13 +105,6 @@ public class FlockNotifierTest {
         Mockito.when(buildWrapper.getStatus()).thenReturn(BuildResult.FAILURE);
         JSONObject json = PayloadManager.createPayload(buildWrapper, jenkinsWrapper);
         assert(json.getString("runURL")).equals("https://someurl.com");
-    }
-
-    @Test
-    public void testVersionNumberExtraction() {
-        Mockito.when(jenkinsWrapper.extractPluginVersionFrom("1.3.1-SNAPSHOT w32-2.1")).thenCallRealMethod();
-        String versionNumber = jenkinsWrapper.extractPluginVersionFrom("1.3.1-SNAPSHOT w32-2.1");
-        assert(versionNumber).equals("1.3.1");
     }
 
     @Test

@@ -18,16 +18,10 @@ public class PayloadManager {
         jsonObject.put("runURL", buildWrapper.getRunURL());
         jsonObject.put("changes", buildWrapper.getChanges());
         jsonObject.put("causeAction", buildWrapper.getCauseAction());
-        jsonObject.put("pluginVersion", getVersionNumber());
-        jsonObject.put("jenkinsVersion", Jenkins.getVersion().toString());
+        jsonObject.put("pluginVersion", jenkinsWrapper.getPluginVersion());
+        jsonObject.put("jenkinsVersion", jenkinsWrapper.getJenkinsVersion());
 
         return jsonObject;
-    }
-
-    private static String getVersionNumber() {
-        String fullVersion = Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString();
-        String[] splits = fullVersion.split("-SNAPSHOT");
-        return splits[0];
     }
 
 }
