@@ -24,14 +24,10 @@ public class PayloadManager {
         return jsonObject;
     }
 
-    private static String getVersionNumber() {
+    private static String  getVersionNumber() {
         String fullVersion = Jenkins.get().pluginManager.getPlugin("flock").getVersionNumber().toString();
         String[] splits = fullVersion.split("-SNAPSHOT");
-        String justNumber = splits[0];
-        if (justNumber == null) {
-            return fullVersion;
-        }
-        return justNumber;
+        return splits[0];
     }
 
 }
